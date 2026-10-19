@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sistemas Operativos: práctica</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F3F6FA;--grid:#DCE4EE;--ink:#1B2A4A;--muted:#566884;--card:#fff;--line:#C4CFDE;--acc:#0E7C86;--accbg:#DDF1F2;--ok:#1B7F52;--okbg:#DFF3E8;--bad:#C0354C;--badbg:#FBE3E7;--hl:#F2C94C;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#101826;--grid:#1A2538;--ink:#E7EDF7;--muted:#9AABC6;--card:#172134;--line:#2B3A55;--acc:#4FC3CC;--accbg:#12353B;--ok:#5BD08F;--okbg:#14352A;--bad:#FF7A8E;--badbg:#3A1B24}}
+:root[data-theme="dark"]{--bg:#101826;--grid:#1A2538;--ink:#E7EDF7;--muted:#9AABC6;--card:#172134;--line:#2B3A55;--acc:#4FC3CC;--accbg:#12353B;--ok:#5BD08F;--okbg:#14352A;--bad:#FF7A8E;--badbg:#3A1B24}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background-color:var(--bg);background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:24px 24px;color:var(--ink);font-family:"Bricolage Grotesque",system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.5}
+main{max-width:680px;margin:0 auto;padding:20px 16px 48px}
+h1{font-size:1.9rem;line-height:1.1;font-weight:800;margin:8px 0 4px}
+h2{font-size:1.15rem;margin:0 0 10px}
+.sub{color:var(--muted);margin:0 0 18px}
+.tabs{display:flex;gap:8px;margin-bottom:16px}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.tab{flex:1;padding:10px 12px;border:2px solid var(--ink);background:var(--card);border-radius:10px;font-weight:600}
+.tab[aria-selected="true"]{background:var(--ink);color:var(--bg)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.chip{padding:5px 12px;border:1.5px solid var(--line);background:var(--card);border-radius:99px;font-size:.9rem}
+.chip[aria-pressed="true"]{background:var(--acc);border-color:var(--acc);color:#fff}
+.bar{height:8px;background:var(--line);border-radius:9px;overflow:hidden;margin-bottom:6px}
+.bar i{display:block;height:100%;width:0;background:var(--acc);transition:width .3s}
+.stats{display:flex;justify-content:space-between;color:var(--muted);font-size:.9rem;margin-bottom:12px}
+.card{background:var(--card);border:2px solid var(--ink);border-radius:14px;padding:18px;box-shadow:4px 4px 0 var(--ink)}
+.q{font-size:1.15rem;font-weight:600;margin:0 0 14px}
+.tag{display:inline-block;background:var(--hl);color:#1B2A4A;border-radius:6px;padding:1px 8px;font-size:.8rem;font-weight:600;margin-bottom:8px}
+.opt{display:block;width:100%;text-align:left;padding:11px 14px;margin-bottom:8px;border:2px solid var(--line);background:var(--bg);border-radius:10px}
+.opt:hover:not(:disabled){border-color:var(--acc)}
+.opt.ok{border-color:var(--ok);background:var(--okbg)}
+.opt.bad{border-color:var(--bad);background:var(--badbg)}
+.opt:disabled{cursor:default}
+.fb{margin:10px 0;padding:10px 12px;border-radius:10px;background:var(--accbg)}
+.main-btn{padding:10px 18px;border:2px solid var(--ink);background:var(--acc);color:#fff;border-radius:10px;font-weight:600}
+.alt-btn{padding:10px 18px;border:2px solid var(--ink);background:var(--card);border-radius:10px;font-weight:600}
+.big{font-size:2.6rem;font-weight:800;line-height:1}
+table{border-collapse:collapse;margin:8px 0 12px}
+th,td{border:1.5px solid var(--line);padding:5px 12px;text-align:center}
+th{background:var(--accbg)}
+.scroll{overflow-x:auto}
+.row{display:flex;flex-wrap:wrap;gap:10px;margin:10px 0}
+label{display:flex;flex-direction:column;font-size:.9rem;color:var(--muted);flex:1 1 120px}
+input{font:inherit;padding:8px 10px;margin-top:3px;border:2px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);width:100%}
+input.ok{border-color:var(--ok);background:var(--okbg)}
+input.bad{border-color:var(--bad);background:var(--badbg)}
+code{background:var(--accbg);padding:1px 6px;border-radius:5px}
+@media(prefers-reduced-motion:reduce){.bar i{transition:none}}
+</style>
+</head>
+<body>
+<main>
+<h1>Sistemas Operativos: práctica</h1>
+<p class="sub">Unidades 4, 5 y 6 de UTN San Nicolás. Un quiz de opción múltiple y un ejercicio de paginación.</p>
+<div class="tabs" role="tablist">
+  <button class="tab" id="t1" role="tab" aria-selected="true">Quiz</button>
+  <button class="tab" id="t2" role="tab" aria-selected="false">Ejercicio de paginación</button>
+</div>
+
+<section id="quiz">
+  <div class="chips" id="chips"></div>
+  <div class="bar"><i id="bar"></i></div>
+  <div class="stats"><span id="st1"></span><span id="st2"></span></div>
+  <div class="card" id="qbox"></div>
+</section>
+
+<section id="pag" hidden>
+  <div class="card">
+    <h2>Traducí la dirección lógica</h2>
+    <div id="exInfo"></div>
+    <div class="row">
+      <label>Número de página (p)<input id="ip" inputmode="numeric" autocomplete="off"></label>
+      <label>Desplazamiento (d)<input id="id" inputmode="numeric" autocomplete="off"></label>
+      <label>Marco (f)<input id="if" inputmode="numeric" autocomplete="off"></label>
+      <label>Dirección física<input id="iy" inputmode="numeric" autocomplete="off"></label>
+    </div>
+    <div class="row">
+      <button class="main-btn" id="chk">Comprobar</button>
+      <button class="alt-btn" id="sol">Ver solución</button>
+      <button class="alt-btn" id="nw">Nuevo ejercicio</button>
+    </div>
+    <div class="fb" id="exFb" hidden></div>
+    <p class="sub" id="exCount" style="margin:8px 0 0"></p>
+  </div>
+</section>
+</main>
+
+<script>
+const Q=[
+[4,"¿Qué es una condición de carrera?","El resultado depende del orden en que los procesos acceden a un dato compartido",["Dos procesos esperan para siempre un recurso del otro","Un proceso gira en un bucle consumiendo CPU","Un proceso termina antes que su padre"],"Con un dato compartido, manda quien escribe último y no la lógica: 5 + 1 − 1 puede dar 4, 5 o 6."],
+[4,"¿Qué tres condiciones debe cumplir una solución al problema de la sección crítica?","Exclusión mutua, progreso y espera limitada",["Exclusión mutua, retención y espera, y espera circular","Progreso, sin desalojo y espera activa","Atomicidad, prioridad y apropiación"],"Solo uno adentro, la decisión no se posterga para siempre y nadie espera eternamente."],
+[4,"¿Por qué falla la solución de Peterson en hardware moderno?","Porque CPU y compilador reordenan instrucciones y hay cachés por núcleo",["Porque solo funciona con 3 procesos","Porque necesita semáforos para andar","Porque los procesos no pueden compartir memoria"],"Si turn se escribe antes que flag, los dos procesos pueden entrar a la sección crítica."],
+[4,"test_and_set y compare_and_swap dan exclusión mutua, pero no garantizan...","Espera limitada (puede haber inanición)",["Que la operación sea atómica","Que el cerrojo se pueda tomar","Que funcionen en multinúcleo"],"Un proceso puede perder siempre la carrera por el lock mientras otros lo toman una y otra vez."],
+[4,"Un semáforo contador arranca en 5. Se ejecutan 3 wait() y 1 signal(). ¿Cuánto vale?","3",["1","2","4"],"Cada wait resta 1 y cada signal suma 1: 5 − 3 + 1 = 3."],
+[4,"¿Cuál NO es una de las 4 condiciones necesarias del deadlock?","Espera activa (busy waiting)",["Exclusión mutua","Retención y espera","Espera circular"],"Las cuatro son: exclusión mutua, retención y espera, sin desalojo y espera circular."],
+[4,"En la solución simple de los filósofos con un semáforo por palillo, ¿cómo se produce el deadlock?","Los 5 toman a la vez el palillo izquierdo y todos esperan el derecho",["Dos filósofos toman el mismo palillo","Un filósofo come sin soltar nunca los palillos","Los semáforos se inicializan en 0 por error"],"Todos los palillos quedan en 0 y nadie suelta nada: espera circular."],
+[5,"¿Qué elimina la paginación?","La fragmentación externa",["La fragmentación interna","La tabla de páginas","La necesidad de la MMU"],"Páginas y marcos tienen el mismo tamaño, así que no hacen falta huecos grandes. Queda algo de fragmentación interna en la última página."],
+[5,"¿Para qué sirve el TLB?","Es una caché de traducciones que evita el doble acceso a memoria",["Guarda las páginas que están en disco","Reemplaza a la tabla de páginas","Calcula el desplazamiento d"],"Con TLB hit se evita consultar la tabla de páginas en RAM; con miss se consulta y se actualiza el TLB."],
+[5,"¿Cuándo se produce un page fault?","Cuando el proceso accede a una página cuyo bit es inválido porque no está en RAM",["Cuando la RAM se queda sin energía","Cuando dos procesos escriben la misma página","Cuando el TLB tiene un hit"],"El hardware hace un trap, el SO trae la página del disco, actualiza la tabla y reinicia la instrucción."],
+[5,"¿Qué es la anomalía de Belady?","Con FIFO, dar más marcos puede producir más page faults",["Con LRU, más marcos siempre dan más fallos","El thrashing aumenta con más RAM","OPT falla con cadenas largas"],"Pasa con FIFO (por ejemplo 3 marcos = 9 fallos y 4 marcos = 10). LRU y OPT no la sufren."],
+[5,"¿Qué es el thrashing?","El sistema pasa más tiempo paginando que ejecutando instrucciones",["Un proceso se queda sin CPU por prioridad","La RAM se llena de páginas limpias","El disco se queda sin espacio"],"Se corrige con el working set: si la demanda total supera los marcos, se baja la multiprogramación."],
+[5,"En copy-on-write, tras un fork, ¿cuándo se copia una página?","Cuando alguno de los procesos intenta escribirla",["En el momento del fork","Cuando el hijo hace exec","Nunca, se comparten siempre"],"Mientras solo se lee, padre e hijo comparten los marcos. Al escribir, el SO copia solo esa página."],
+[5,"RAM de 200 ns, page fault de 8 ms y p = 0,01. ¿Cuánto vale aproximadamente el EAT?","≈ 80.198 ns",["≈ 200 ns","≈ 2.200 ns","≈ 8.000.200 ns"],"EAT = (1 − p) × 200 + p × 8.000.000 = 200 + 7.999.800 × 0,01 ≈ 80.198 ns: casi 400 veces más lento."],
+[6,"Se borra el archivo original. ¿Qué pasa con un hard link y con un soft link a él?","El hard link sigue funcionando y el soft link queda roto",["Ambos siguen funcionando","Ambos quedan rotos","El soft link sigue y el hard link queda roto"],"El hard link apunta al mismo inodo y el archivo vive mientras quede una entrada. El soft link guarda solo la ruta."],
+[6,"Con bloques de 4 KB y punteros de 4 bytes, ¿cuánto direccionan los 12 punteros directos del inodo?","48 KB",["4 MB","12 KB","4 GB"],"12 × 4 KB = 48 KB. El indirecto simple agrega 4 MB, el doble 4 GB y el triple 4 TB."],
+[6,"En una transferencia por DMA, ¿cuántas interrupciones genera la controladora?","Una sola, al terminar el bloque completo",["Una por cada byte transferido","Ninguna","Una por cada página"],"La controladora de DMA copia entre dispositivo y RAM sin la CPU y avisa una vez al final."],
+[6,"Un archivo de 5.000 bytes en bloques de 4.096 bytes: ¿cuántos bytes se desperdician?","3.192",["96","904","4.096"],"Ocupa 2 bloques (8.192 B): 8.192 − 5.000 = 3.192 B de fragmentación interna."]
+];
+const $=s=>document.querySelector(s);
+const shuffle=a=>{for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const rnd=n=>Math.floor(Math.random()*n);
+
+// Pestañas
+function tab(n){
+  $("#quiz").hidden=n!==1;$("#pag").hidden=n!==2;
+  $("#t1").setAttribute("aria-selected",n===1);$("#t2").setAttribute("aria-selected",n===2);
+}
+$("#t1").onclick=()=>tab(1);$("#t2").onclick=()=>tab(2);
+
+// Quiz
+let filt=0,order=[],qi=0,score=0,streak=0,best=0,done=false;
+function chips(){
+  $("#chips").innerHTML="";
+  [["Todas",0],["Unidad 4",4],["Unidad 5",5],["Unidad 6",6]].forEach(([t,v])=>{
+    const b=document.createElement("button");b.className="chip";b.textContent=t;
+    b.setAttribute("aria-pressed",filt===v);b.onclick=()=>{filt=v;start()};$("#chips").appendChild(b);
+  });
+}
+function start(){
+  const pool=Q.filter(q=>!filt||q[0]===filt);
+  order=shuffle(pool.slice()).slice(0,10);qi=0;score=0;streak=0;best=0;chips();show();
+}
+function stats(){
+  $("#bar").style.width=(qi/order.length*100)+"%";
+  $("#st1").textContent="Pregunta "+Math.min(qi+1,order.length)+" de "+order.length;
+  $("#st2").textContent="Aciertos: "+score+" | Racha: "+streak;
+}
+function show(){
+  stats();done=false;
+  if(qi>=order.length){return result()}
+  const q=order[qi],opts=shuffle([q[2],...q[3]]);
+  const box=$("#qbox");
+  box.innerHTML='<span class="tag">Unidad '+q[0]+'</span><p class="q"></p><div id="opts"></div><div class="fb" id="fb" hidden></div><button class="main-btn" id="nx" hidden>Siguiente</button>';
+  box.querySelector(".q").textContent=q[1];
+  opts.forEach(o=>{
+    const b=document.createElement("button");b.className="opt";b.textContent=o;
+    b.onclick=()=>answer(b,o===q[2],q);$("#opts").appendChild(b);
+  });
+}
+function answer(btn,ok,q){
+  if(done)return;done=true;
+  document.querySelectorAll(".opt").forEach(b=>{b.disabled=true;if(b.textContent===q[2])b.classList.add("ok")});
+  if(ok){score++;streak++;best=Math.max(best,streak)}else{btn.classList.add("bad");streak=0}
+  const fb=$("#fb");fb.hidden=false;fb.textContent=(ok?"¡Correcto! ":"No es esa. ")+q[4];
+  const nx=$("#nx");nx.hidden=false;nx.textContent=qi+1>=order.length?"Ver resultado":"Siguiente";
+  nx.onclick=()=>{qi++;show()};nx.focus();stats();
+}
+function result(){
+  $("#bar").style.width="100%";
+  const p=Math.round(score/order.length*100);
+  const msg=p===100?"Perfecto. Podés rendir mañana.":p>=70?"Muy bien. Repasá las que fallaste.":p>=40?"Vas por buen camino. Una vuelta más al resumen.":"Hay que repasar. Volvé al resumen y reintentá.";
+  $("#qbox").innerHTML='<p class="big">'+score+" / "+order.length+'</p><p class="q" style="margin-top:8px">'+msg+'</p><p class="sub">Mejor racha: '+best+'</p><button class="main-btn" id="again">Jugar otra ronda</button>';
+  $("#again").onclick=start;$("#again").focus();
+}
+
+// Ejercicio de paginación
+let ex=null,solved=0,tries=0;
+function newEx(){
+  const m=6,n=[2,3][rnd(2)],P=1<<(m-n),S=1<<n;
+  const frames=shuffle(Array.from({length:P*2},(_,i)=>i)).slice(0,P);
+  const addr=rnd(1<<m),p=addr>>n,d=addr&(S-1),f=frames[p];
+  ex={m,n,P,S,frames,addr,p,d,f,phys:f*S+d};
+  let t='<p>Espacio lógico de <code>2<sup>'+m+'</sup> = '+(1<<m)+'</code> direcciones y páginas de <code>2<sup>'+n+'</sup> = '+S+'</code> bytes. La memoria física tiene '+(P*2)+' marcos.</p><div class="scroll"><table><tr><th>Página</th>';
+  frames.forEach((_,i)=>t+="<td>"+i+"</td>");t+="</tr><tr><th>Marco</th>";
+  frames.forEach(x=>t+="<td>"+x+"</td>");
+  t+="</tr></table></div><p>Dirección lógica: <strong style=\"font-size:1.4rem\">"+addr+"</strong></p>";
+  $("#exInfo").innerHTML=t;
+  ["ip","id","if","iy"].forEach(i=>{const e=$("#"+i);e.value="";e.className=""});
+  $("#exFb").hidden=true;tries=0;$("#exCount").textContent="Resueltos: "+solved;$("#ip").focus();
+}
+function check(){
+  const v={ip:ex.p,id:ex.d,if:ex.f,iy:ex.phys};let all=true;
+  for(const k in v){
+    const e=$("#"+k),val=e.value.trim();
+    if(val===""){e.className="";all=false;continue}
+    const good=Number(val)===v[k];e.className=good?"ok":"bad";if(!good)all=false;
+  }
+  tries++;const fb=$("#exFb");fb.hidden=false;
+  if(all){solved++;fb.textContent="¡Todo correcto! Armá otro con “Nuevo ejercicio”.";$("#exCount").textContent="Resueltos: "+solved}
+  else fb.textContent="Revisá los campos marcados en rojo. Pista: p y d salen de dividir la dirección lógica por el tamaño de página; el desplazamiento no cambia al traducir."+(tries>=2?" Si te trabás, mirá la solución.":"");
+}
+function solution(){
+  const bin=ex.addr.toString(2).padStart(ex.m,"0"),a=bin.slice(0,ex.m-ex.n),b=bin.slice(ex.m-ex.n);
+  ["ip","id","if","iy"].forEach((k,i)=>{const e=$("#"+k);e.value=[ex.p,ex.d,ex.f,ex.phys][i];e.className="ok"});
+  const fb=$("#exFb");fb.hidden=false;
+  fb.innerHTML="<strong>Paso a paso</strong><br>1. Con "+ex.m+" bits lógicos y páginas de 2<sup>"+ex.n+"</sup>, p usa "+(ex.m-ex.n)+" bits y d usa "+ex.n+" bits.<br>2. "+ex.addr+" = ("+bin+")<sub>2</sub> = ("+a+" | "+b+")<sub>2</sub>, entonces p = "+ex.p+" y d = "+ex.d+".<br>3. La tabla dice: página "+ex.p+" → marco "+ex.f+".<br>4. Dirección física = "+ex.f+" × "+ex.S+" + "+ex.d+" = <strong>"+ex.phys+"</strong>.";
+}
+$("#chk").onclick=check;$("#sol").onclick=solution;$("#nw").onclick=newEx;
+["ip","id","if","iy"].forEach(i=>$("#"+i).addEventListener("keydown",e=>{if(e.key==="Enter")check()}));
+
+start();newEx();
+</script>
+</body>
+</html>
